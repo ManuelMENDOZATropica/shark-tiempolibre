@@ -176,7 +176,7 @@ html,body{margin:0;padding:0;background:#000;-webkit-font-smoothing:antialiased;
           <div style="font-weight:900;font-size:25px;color:#FFE000;">{{ modelPrice }}</div>
           <div style="font:500 11px 'JetBrains Mono';color:rgba(255,255,255,.4);letter-spacing:.04em;">Envío Full</div>
         </div>
-        <button onClick="{{ noop }}" style="margin-top:18px;width:100%;border:none;cursor:pointer;border-radius:14px;padding:17px;background:#FFE000;color:#111;font-weight:900;font-size:15px;letter-spacing:.02em;text-transform:uppercase;transition:background .2s;" style-hover="background:#fff;">Comprar en Mercado Libre →</button>
+        <button onClick="{{ goBuy }}" style="margin-top:18px;width:100%;border:none;cursor:pointer;border-radius:14px;padding:17px;background:#FFE000;color:#111;font-weight:900;font-size:15px;letter-spacing:.02em;text-transform:uppercase;transition:background .2s;" style-hover="background:#fff;">Comprar en Mercado Libre →</button>
       </div>
     </div>
   </div>
@@ -356,6 +356,14 @@ class Component extends DCLogic {
         }, 2200);
       },
       goCalc: () => this.setState({ screen: 'calc' }),
+      goBuy: () => {
+        const url = days <= 2 
+          ? "https://listado.mercadolibre.com.mx/shark-cordless-pro" 
+          : days <= 5 
+            ? "https://listado.mercadolibre.com.mx/shark-detect-pro" 
+            : "https://listado.mercadolibre.com.mx/shark-powerdetect-auto-empty";
+        window.open(url, '_blank');
+      },
       noop: () => {},
     };
   }
