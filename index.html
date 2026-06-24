@@ -16,6 +16,22 @@
 html,body{margin:0;padding:0;background:#000;-webkit-font-smoothing:antialiased;}
 @keyframes fadeUp{from{transform:translateY(22px);}to{transform:none;}}
 @keyframes popIn{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:none;}}
+@keyframes radarPulse {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes pulseCore {
+  from { transform: scale(0.85); box-shadow: 0 0 12px rgba(255, 224, 0, 0.6); }
+  to { transform: scale(1.15); box-shadow: 0 0 28px rgba(255, 224, 0, 1); }
+}
+@keyframes pulseText {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
 </style>
 </helmet>
 <div style="min-height:100vh;width:100%;background:#000;display:flex;justify-content:center;font-family:'Archivo',sans-serif;color:#fff;">
@@ -100,6 +116,21 @@ html,body{margin:0;padding:0;background:#000;-webkit-font-smoothing:antialiased;
 </div>
 </sc-if>
 
+<sc-if value="{{ isCalculating }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;animation:popIn 0.4s ease;background:radial-gradient(125% 55% at 50% -2%,#181818 0%,#050505 58%);">
+  <div style="position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:32px;">
+    <div style="position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid #FFE000;opacity:0.25;animation:radarPulse 2s infinite ease-out;"></div>
+    <div style="position:absolute;width:80%;height:80%;border-radius:50%;border:3px solid transparent;border-top-color:#FFE000;border-left-color:#FFE000;animation:spin 1s linear infinite;"></div>
+    <div style="width:24px;height:24px;border-radius:50%;background:#FFE000;box-shadow:0 0 20px #FFE000;animation:pulseCore 1s alternate infinite ease-in-out;"></div>
+  </div>
+  <div style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.28em;color:#FFE000;text-transform:uppercase;margin-bottom:18px;animation:pulseText 1.5s infinite;">Calculando tu tiempo libre</div>
+  <div style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.6;max-width:280px;height:40px;">
+    <div id="calc-step-text" style="transition: opacity 0.15s ease; opacity: 1;">Analizando días de limpieza...</div>
+  </div>
+  <div style="margin-top:40px;font:500 10px 'JetBrains Mono';color:rgba(255,255,255,0.25);letter-spacing:0.1em;text-transform:uppercase;">Espere un momento</div>
+</div>
+</sc-if>
+
 <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
 <div style="padding-bottom:46px;">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 24px 6px;">
@@ -135,8 +166,8 @@ html,body{margin:0;padding:0;background:#000;-webkit-font-smoothing:antialiased;
   <div style="margin:30px 22px 0;">
     <div style="font:700 11px 'Archivo';letter-spacing:.28em;color:rgba(255,255,255,.55);text-transform:uppercase;">Tu Shark ideal</div>
     <div style="margin-top:13px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#1d1d1d,#0b0b0b);border:1px solid rgba(255,255,255,.08);">
-      <div style="height:210px;position:relative;background:repeating-linear-gradient(135deg,#151515 0 14px,#1e1e1e 14px 28px);display:flex;align-items:center;justify-content:center;">
-        <div style="font:500 11px/1.7 'JetBrains Mono';letter-spacing:.1em;color:rgba(255,255,255,.42);text-transform:uppercase;text-align:center;">[ foto producto Shark ]<br><span style="color:rgba(255,255,255,.24);">arrastra la imagen aquí</span></div>
+      <div style="height:220px;position:relative;background:radial-gradient(circle at center, #1d1d1d 0%, #0b0b0b 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);">
+        <img src="{{ modelImage }}" alt="{{ model }}" style="height:85%;width:auto;object-fit:contain;display:block;animation:popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);"/>
       </div>
       <div style="padding:21px;">
         <div style="font-weight:900;font-size:21px;color:#fff;line-height:1.05;">{{ model }}</div>
@@ -257,14 +288,28 @@ class Component extends DCLogic {
     ];
     const pc = [0, 1, 2, 3, 4].map((i) => (i === passion ? '#FFE000' : '#7e7e7e'));
 
-    let model, modelTag, modelPrice;
-    if (days <= 2) { model = 'Shark Cordless Pro'; modelTag = 'Ligera, ágil y lista para el día a día.'; modelPrice = '$5,999'; }
-    else if (days <= 5) { model = 'Shark Detect Pro'; modelTag = 'Detecta la suciedad que tus ojos no ven.'; modelPrice = '$8,499'; }
-    else { model = 'Shark PowerDetect Auto-Empty'; modelTag = 'Se vacía sola. Olvídate de limpiar.'; modelPrice = '$12,999'; }
+    let model, modelTag, modelPrice, modelImage;
+    if (days <= 2) { 
+      model = 'Shark Cordless Pro'; 
+      modelTag = 'Ligera, ágil y lista para el día a día.'; 
+      modelPrice = '$5,999'; 
+      modelImage = 'assets/shark-cordless-pro.png';
+    } else if (days <= 5) { 
+      model = 'Shark Detect Pro'; 
+      modelTag = 'Detecta la suciedad que tus ojos no ven.'; 
+      modelPrice = '$8,499'; 
+      modelImage = 'assets/shark-detect-pro.png';
+    } else { 
+      model = 'Shark PowerDetect Auto-Empty'; 
+      modelTag = 'Se vacía sola. Olvídate de limpiar.'; 
+      modelPrice = '$12,999'; 
+      modelImage = 'assets/shark-powerdetect.png';
+    }
 
     return {
       isCalc: this.state.screen === 'calc',
       isResult: this.state.screen === 'result',
+      isCalculating: this.state.screen === 'calculating',
       days, hoursWeek, hoursMonth,
       ringCirc: circ, ringOffset, knobAngle,
       nums, knobRef: this.knobRef, onKnobDown: this.onKnobDown,
@@ -280,9 +325,36 @@ class Component extends DCLogic {
       passionLabel: labels[passion],
       currentTrans: trans[passion],
       currentReward: rewards[passion],
-      model, modelTag, modelPrice,
+      model, modelTag, modelPrice, modelImage,
       rewardValue: '$2,500 MXN',
-      goResult: () => this.setState({ screen: 'result' }),
+      goResult: () => {
+        this.setState({ screen: 'calculating' });
+        let step = 0;
+        const steps = [
+          "Midiendo el impuesto de la escoba...",
+          "Calculando horas mensuales perdidas...",
+          "Evaluando tu pasión elegida...",
+          "Buscando tu Shark ideal..."
+        ];
+        const updateText = () => {
+          const el = document.getElementById('calc-step-text');
+          if (el && steps[step]) {
+            el.style.opacity = 0;
+            setTimeout(() => {
+              if (el) {
+                el.innerText = steps[step];
+                el.style.opacity = 1;
+              }
+              step++;
+            }, 150);
+          }
+        };
+        const interval = setInterval(updateText, 450);
+        setTimeout(() => {
+          clearInterval(interval);
+          this.setState({ screen: 'result' });
+        }, 2200);
+      },
       goCalc: () => this.setState({ screen: 'calc' }),
       noop: () => {},
     };
