@@ -48,7 +48,7 @@ html,body{margin:0;padding:0;background:#000;-webkit-font-smoothing:antialiased;
 
   <div style="padding:16px 24px 0;">
     <div style="font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.24em;color:#FFE000;text-transform:uppercase;">Calculadora de tiempo</div>
-    <h1 style="margin:11px 0 0;font-weight:900;font-size:34px;line-height:.97;letter-spacing:-.015em;text-transform:uppercase;">¿Cuánto te<br>roba la escoba?</h1>
+    <h1 style="margin:11px 0 0;font-weight:900;font-size:34px;line-height:.97;letter-spacing:-.015em;text-transform:uppercase;">¿Cuánto tiempo<br>te quita limpiar?</h1>
     <p style="margin:13px 0 0;font-size:13px;line-height:1.45;color:rgba(255,255,255,.52);max-width:310px;">Gira el dial, elige tu pasión y descubre las horas de vida que la limpieza tradicional te quita cada mes.</p>
   </div>
 
@@ -143,8 +143,8 @@ html,body{margin:0;padding:0;background:#000;-webkit-font-smoothing:antialiased;
 
   <div style="padding:18px 24px 0;">
     <div style="font:600 11px 'JetBrains Mono';letter-spacing:.24em;color:rgba(255,255,255,.45);text-transform:uppercase;">El veredicto</div>
-    <h2 style="margin:11px 0 0;font-weight:900;font-size:31px;line-height:1;text-transform:uppercase;letter-spacing:-.015em;">El impuesto<br>de la escoba</h2>
-    <p style="margin:18px 0 0;font-size:16px;line-height:1.4;color:rgba(255,255,255,.78);">Cada mes le estás regalando a la escoba</p>
+    <h2 style="margin:11px 0 0;font-weight:900;font-size:31px;line-height:1;text-transform:uppercase;letter-spacing:-.015em;">El tiempo<br>perdido</h2>
+    <p style="margin:18px 0 0;font-size:16px;line-height:1.4;color:rgba(255,255,255,.78);">Cada mes le estás regalando a la limpieza tradicional</p>
     <div style="margin:8px 0 0;font-weight:900;font-size:64px;line-height:.92;color:#FFE000;letter-spacing:-.03em;">{{ hoursMonth }}<span style="font-size:27px;font-weight:800;margin-left:6px;">horas</span></div>
     <p style="margin:10px 0 0;font-size:15px;color:rgba(255,255,255,.55);">de tu vida. Tiempo que no vuelve.</p>
   </div>
@@ -331,7 +331,7 @@ class Component extends DCLogic {
         this.setState({ screen: 'calculating' });
         let step = 0;
         const steps = [
-          "Midiendo el impuesto de la escoba...",
+          "Midiendo el tiempo de limpieza...",
           "Calculando horas mensuales perdidas...",
           "Evaluando tu pasión elegida...",
           "Buscando tu Shark ideal..."
